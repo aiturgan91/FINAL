@@ -1,6 +1,9 @@
 package org.example.employeedb;
 
 import javafx.beans.property.*;
+import javafx.beans.value.ObservableValue;
+import org.example.employeedb.EmploymentType;
+
 import java.time.LocalDate;
 
 public class Employee {
@@ -13,24 +16,38 @@ public class Employee {
     private final StringProperty phoneNumber;
     private final StringProperty email;
     private final StringProperty gender;
-    private final DoubleProperty calculatedSalary;  // Calculated Salary Property
+    private final DoubleProperty calculatedSalary; // Calculated Salary Property
+
+    // New properties
+    private final StringProperty address;
+    private final StringProperty department;
+    private final StringProperty performance;
+    private final StringProperty status;
+    private final StringProperty experience; // New experience property
 
     // Constructor 1
-    public Employee(int id, String name, String position, double salary, LocalDate hireDate) {
+    public Employee(int id, String name, String position, double salary, LocalDate hireDate, EmploymentType employmentType, String phoneNumber, String email, String gender) {
         this.id = new SimpleIntegerProperty(id);
         this.name = new SimpleStringProperty(name);
         this.position = new SimpleStringProperty(position);
         this.salary = new SimpleDoubleProperty(salary);
         this.hireDate = new SimpleObjectProperty<>(hireDate);
         this.employmentType = new SimpleObjectProperty<>(EmploymentType.FULL_TIME); // Default value
-        this.phoneNumber = new SimpleStringProperty("");
-        this.email = new SimpleStringProperty("");
-        this.gender = new SimpleStringProperty("");
+        this.phoneNumber = new SimpleStringProperty(phoneNumber);
+        this.email = new SimpleStringProperty(email);
+        this.gender = new SimpleStringProperty(gender);
         this.calculatedSalary = new SimpleDoubleProperty(0.0); // Initialize calculated salary
+        this.address = new SimpleStringProperty("");
+        this.department = new SimpleStringProperty("");
+        this.performance = new SimpleStringProperty("");
+        this.status = new SimpleStringProperty("");
+        this.experience = new SimpleStringProperty(""); // Initialize experience property
     }
 
     // Constructor 2
-    public Employee(int id, String name, String position, double salary, LocalDate hireDate, EmploymentType employmentType, String phoneNumber, String email, String gender) {
+    public Employee(int id, String name, String position, double salary, LocalDate hireDate,
+                    EmploymentType employmentType, String phoneNumber, String email, String gender,
+                    String address, String department, String performance, String status, String experience) {
         this.id = new SimpleIntegerProperty(id);
         this.name = new SimpleStringProperty(name);
         this.position = new SimpleStringProperty(position);
@@ -41,6 +58,11 @@ public class Employee {
         this.email = new SimpleStringProperty(email);
         this.gender = new SimpleStringProperty(gender);
         this.calculatedSalary = new SimpleDoubleProperty(0.0); // Initialize calculated salary
+        this.address = new SimpleStringProperty(address);
+        this.department = new SimpleStringProperty(department);
+        this.performance = new SimpleStringProperty(performance);
+        this.status = new SimpleStringProperty(status);
+        this.experience = new SimpleStringProperty(experience); // Initialize experience property
     }
 
     // Getters and setters for all properties
@@ -164,6 +186,68 @@ public class Employee {
         return calculatedSalary;
     }
 
+    // New getters and setters for additional properties
+    public String getAddress() {
+        return address.get();
+    }
+
+    public void setAddress(String address) {
+        this.address.set(address);
+    }
+
+    public StringProperty addressProperty() {
+        return address;
+    }
+
+    public String getDepartment() {
+        return department.get();
+    }
+
+    public void setDepartment(String department) {
+        this.department.set(department);
+    }
+
+    public StringProperty departmentProperty() {
+        return department;
+    }
+
+    public String getPerformance() {
+        return performance.get();
+    }
+
+    public void setPerformance(String performance) {
+        this.performance.set(performance);
+    }
+
+    public StringProperty performanceProperty() {
+        return performance;
+    }
+
+    public String getStatus() {
+        return status.get();
+    }
+
+    public void setStatus(String status) {
+        this.status.set(status);
+    }
+
+    public StringProperty statusProperty() {
+        return status;
+    }
+
+    // Experience Property
+    public String getExperience() {
+        return experience.get();
+    }
+
+    public void setExperience(String experience) {
+        this.experience.set(experience);
+    }
+
+    public StringProperty experienceProperty() {
+        return experience;
+    }
+
     @Override
     public String toString() {
         return "Employee{" +
@@ -177,6 +261,11 @@ public class Employee {
                 ", email='" + email.get() + '\'' +
                 ", gender='" + gender.get() + '\'' +
                 ", calculatedSalary=" + calculatedSalary.get() +
+                ", address='" + address.get() + '\'' +
+                ", department='" + department.get() + '\'' +
+                ", performance='" + performance.get() + '\'' +
+                ", status='" + status.get() + '\'' +
+                ", experience='" + experience.get() + '\'' +
                 '}';
     }
 }

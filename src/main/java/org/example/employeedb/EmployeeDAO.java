@@ -11,8 +11,9 @@ public class EmployeeDAO {
 
     private static final String URL = "jdbc:postgresql://localhost:5432/employee";
     private static final String USER = "postgres";
-    private static final String PASSWORD = "1359";
+    private static final String PASSWORD = "G020605gg";
     private static final Logger LOGGER = Logger.getLogger(EmployeeDAO.class.getName());
+    private Employee employee;
 
     // Establish a connection to the database
     private Connection getConnection() throws SQLException {
@@ -43,8 +44,9 @@ public class EmployeeDAO {
 
     // Create a new employee record in the database
     public void createEmployee(Employee employee) {
-        String sql = "INSERT INTO employee (id, name, position, salary, hire_date, employment_type, phone_number, email, gender) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        this.employee = employee;
+        String sql = "INSERT INTO employee (id, name, position, salary, hire_date, employment_type, phone_number, email, gender, address, department, performance, status) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, employee.getId());
@@ -56,33 +58,14 @@ public class EmployeeDAO {
             pstmt.setString(7, employee.getPhoneNumber());
             pstmt.setString(8, employee.getEmail());
             pstmt.setString(9, employee.getGender());
+            pstmt.setString(10, employee.addressProperty().getValue());
+            pstmt.setString(11, employee.departmentProperty().getValue());
+            pstmt.setString(12, employee.performanceProperty().getValue());
+            pstmt.setString(13, employee.statusProperty().getValue());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error creating employee", e);
         }
-    }
-
-    // Fetch an employee by their ID
-    public Employee getEmployeeById(int id) {
-        LOGGER.info("Fetching Employee with ID: " + id);
-        String sql = "SELECT * FROM employee WHERE id = ?";
-        Employee employee = null;
-
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, id);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    employee = mapToEmployee(rs);
-                    LOGGER.info("Employee Found: " + employee);
-                } else {
-                    LOGGER.warning("No employee found with ID: " + id);
-                }
-            }
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Error fetching employee by ID", e);
-        }
-        return employee;
     }
 
     // Fetch all employees from the database
@@ -105,7 +88,7 @@ public class EmployeeDAO {
     // Update an existing employee's data
     public void updateEmployee(Employee employee) {
         String sql = "UPDATE employee SET name = ?, position = ?, salary = ?, hire_date = ?, employment_type = ?, " +
-                "phone_number = ?, email = ?, gender = ? WHERE id = ?";
+                "phone_number = ?, email = ?, gender = ?, address = ?, department = ?, performance = ?, status = ? WHERE id = ?";
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, employee.getName());
@@ -116,7 +99,11 @@ public class EmployeeDAO {
             pstmt.setString(6, employee.getPhoneNumber());
             pstmt.setString(7, employee.getEmail());
             pstmt.setString(8, employee.getGender());
-            pstmt.setInt(9, employee.getId());
+            pstmt.setString(9, employee.addressProperty().getValue());
+            pstmt.setString(10, employee.departmentProperty().getValue());
+            pstmt.setString(11, employee.performanceProperty().getValue());
+            pstmt.setString(12, employee.statusProperty().getValue());
+            pstmt.setInt(13, employee.getId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error updating employee", e);
@@ -136,13 +123,13 @@ public class EmployeeDAO {
         }
     }
 
-    // Delete all employees from the database
+    // Delete all employees
     public void deleteAllEmployees() {
         String sql = "DELETE FROM employee";
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.executeUpdate(sql);
-            LOGGER.info("All employees deleted from the database.");
+            LOGGER.info("All employees have been deleted.");
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Error deleting all employees", e);
         }
@@ -150,7 +137,7 @@ public class EmployeeDAO {
 
     // Helper method to map ResultSet to Employee object
     private Employee mapToEmployee(ResultSet rs) throws SQLException {
-        return new Employee(
+        Employee employee = new Employee(
                 rs.getInt("id"),
                 rs.getString("name"),
                 rs.getString("position"),
@@ -161,5 +148,10 @@ public class EmployeeDAO {
                 rs.getString("email"),
                 rs.getString("gender")
         );
+        employee.addressProperty().setValue(rs.getString("address"));
+        employee.departmentProperty().setValue(rs.getString("department"));
+        employee.performanceProperty().setValue(rs.getString("performance"));
+        employee.statusProperty().setValue(rs.getString("status"));
+        return employee;
     }
 }

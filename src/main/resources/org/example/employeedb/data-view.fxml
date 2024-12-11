@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="731.0" prefWidth="1032.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.employeedb.DataController">
+
+<children>
+    <VBox alignment="TOP_CENTER" spacing="20.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+        <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Employee Analytics Dashboard" />
+
+        <!-- Search Section -->
+        <HBox alignment="CENTER" spacing="15.0">
+            <Label text="Find Employee:" />
+            <TextField fx:id="txtSearchEmployee" promptText="Enter employee name" />
+            <Button fx:id="btnSearch" text="Search" />
+        </HBox>
+
+        <!-- Charts Section -->
+        <HBox alignment="CENTER" spacing="30.0">
+            <PieChart fx:id="genderDistributionChart" prefHeight="300.0" prefWidth="400.0" />
+            <BarChart fx:id="salaryDistributionChart" prefHeight="300.0" prefWidth="500.0">
+                <xAxis>
+                    <CategoryAxis label="Salary Ranges" fx:id="xAxisSalary" />
+                </xAxis>
+                <yAxis>
+                    <NumberAxis fx:id="yAxisSalary" label="Count" />
+                </yAxis>
+            </BarChart>
+        </HBox>
+
+        <!-- Employee Table -->
+        <TableView fx:id="employeeTable" prefHeight="259.0" prefWidth="1011.0">
+            <columns>
+                <TableColumn fx:id="colId" prefWidth="50.0" text="ID" />
+                <TableColumn fx:id="colName" prefWidth="150.0" text="Name" />
+                <TableColumn fx:id="colAddress" prefWidth="200.0" text="Address" />
+                <TableColumn fx:id="colDepartment" prefWidth="150.0" text="Department" />
+                <TableColumn fx:id="colSalary" prefWidth="150.0" text="Salary" />
+                <TableColumn fx:id="colExperience" prefWidth="150.0" text="Experience" />
+                <TableColumn fx:id="colPerformance" prefWidth="150.0" text="Performance" />
+                <TableColumn fx:id="colStatus" prefWidth="150.0" text="Status" />
+            </columns>
+        </TableView>
+
+        <!-- Filters and Actions -->
+        <VBox alignment="CENTER" prefHeight="129.0" prefWidth="1011.0" spacing="15.0">
+            <Label text="Employee Status Overview" />
+            <HBox fx:id="hbox3" alignment="CENTER" spacing="15.0">
+                <Button fx:id="btnActiveEmployees" text="Show Active Employees" />
+                <Button fx:id="btnInactiveEmployees" text="Show Inactive Employees" />
+            </HBox>
+            <HBox fx:id="hbox" alignment="CENTER" spacing="15.0">
+                <Button fx:id="btnJuniorSalaries" text="Junior Salaries" />
+                <Button fx:id="btnMiddleSalaries" text="Middle Salaries" />
+                <Button fx:id="btnHighSalaries" text="High Salaries" />
+            </HBox>
+            <HBox fx:id="Hbox" alignment="CENTER" spacing="15.0">
+                <Button fx:id="btnVacations" text="Recent Vacations" />
+                <Button fx:id="btnTeamLeads" text="Team Leads" />
+                <Button fx:id="btnAttendance" text="Attendance Trends" />
+                <Button fx:id="btnDepartmentBudgets" text="Department Budgets" />
+            </HBox>
+        </VBox>
+
+        <!-- Summary Section -->
+        <HBox alignment="CENTER" spacing="30.0">
+            <Label style="-fx-font-size: 16px;" text="Total Employees: " />
+            <Label fx:id="lblTotalEmployees" style="-fx-font-size: 16px;" text="0" />
+            <Label style="-fx-font-size: 16px;" text="Total Men: " />
+            <Label fx:id="lblTotalMen" style="-fx-font-size: 16px;" text="0" />
+            <Label style="-fx-font-size: 16px;" text="Total Women: " />
+            <Label fx:id="lblTotalWomen" style="-fx-font-size: 16px;" text="0" />
+        </HBox>
+    </VBox>
+</children>
+</AnchorPane>
